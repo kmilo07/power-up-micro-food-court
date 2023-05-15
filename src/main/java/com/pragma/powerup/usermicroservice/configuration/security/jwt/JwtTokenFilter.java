@@ -1,15 +1,11 @@
 package com.pragma.powerup.usermicroservice.configuration.security.jwt;
 
 
-import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -22,23 +18,21 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Autowired
     JwtProvider jwtProvider;
 
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
 
-    private List<String> excludedPrefixes = Arrays.asList("/auth/**", "/swagger-ui/**", "/actuator/**", "/person/");
-    private AntPathMatcher pathMatcher = new AntPathMatcher();
+    private final List<String> excludedPrefixes = Arrays.asList("/swagger-ui/**", "/actuator/**");
+    private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain)
             throws ServletException, IOException {
         String token = getToken(req);
-        if (token != null && jwtProvider.validateToken(token)) {
-            String nombreUsuario = jwtProvider.getNombreUsuarioFromToken(token);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(nombreUsuario);
+        if (token != null && jwtProvider.tokenIsValid(token)) {
+            //String nombreUsuario = jwtProvider.getNombreUsuarioFromToken(token);
+            //UserDetails userDetails = userDetailsService.loadUserByUsername(nombreUsuario);
 
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null,
-                    userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(auth);
+//            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null,
+//                    userDetails.getAuthorities());
+//            SecurityContextHolder.getContext().setAuthentication(auth);
         }
         filterChain.doFilter(req, res);
     }
