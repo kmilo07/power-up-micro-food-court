@@ -13,14 +13,14 @@ public class RestaurantRequestDto {
     private String name;
     @NotBlank(message = Constants.RESTAURANT_ADDRESS_MANDATORY)
     private String address;
-    @Null(message = Constants.RESTAURANT_OWNER_MANDATORY)
+    @NotNull(message = Constants.RESTAURANT_OWNER_MANDATORY)
     private Long ownerId;
     @NotBlank(message = Constants.RESTAURANT_PHONE_MANDATORY)
     @Pattern(regexp = Constants.REGEX_PHONE, message = Constants.PHONE_IS_INVALID)
     private String phone;
     @NotBlank(message = Constants.RESTAURANT_URL_LOGO_MANDATORY)
     private String urlLogo;
-    @Null(message = Constants.RESTAURANT_NIT_MANDATORY)
+    @NotNull(message = Constants.RESTAURANT_NIT_MANDATORY)
     @Pattern(regexp = Constants.REGEX_NIT_DIGITS, message = Constants.NIT_IS_INVALID)
-    private Long nit;
+    private String nit;
 }
