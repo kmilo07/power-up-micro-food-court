@@ -1,25 +1,31 @@
 package com.pragma.powerup.usermicroservice.configuration.security.jwt;
 
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.PrincipalUser;
+import com.pragma.powerup.usermicroservice.configuration.security.exception.TokenException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
     @Autowired
     JwtProvider jwtProvider;
 
 
-    private final List<String> excludedPrefixes = Arrays.asList("/swagger-ui/**", "/actuator/**", "/restaurant/**");
+    private final List<String> excludedPrefixes = Arrays.asList("/swagger-ui/**", "/actuator/**");
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
     @Override
@@ -27,12 +33,14 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         String token = getToken(req);
         if (token != null && jwtProvider.tokenIsValid(token)) {
-            //String nombreUsuario = jwtProvider.getNombreUsuarioFromToken(token);
-            //UserDetails userDetails = userDetailsService.loadUserByUsername(nombreUsuario);
-
-//            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails, null,
-//                    userDetails.getAuthorities());
-//            SecurityContextHolder.getContext().setAuthentication(auth);
+            String role = getRole(token);
+            UserDetails user = PrincipalUser.build(role);
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null,
+                    user.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(auth);
+        }
+        else if(token != null){
+            throw new TokenException();
         }
         filterChain.doFilter(req, res);
     }
@@ -54,5 +62,18 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return header.substring(7); // return everything after "Bearer "
         }
         return null;
+    }
+
+    private String getRole(String token){
+        String payload = token.split("\\.")[1];
+        String json = new String(Base64.getDecoder().decode(payload));
+        String role;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            role = mapper.readValue(json, HashMap.class).get("roles").toString();
+        } catch (JsonProcessingException e) {
+            throw new TokenException();
+        }
+        return role.replace("[","").replace("]","");
     }
 }
