@@ -35,7 +35,7 @@ public class ControllerAdvisor {
     }
 
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Map<String, String>> handleAuthenticationException(AuthenticationException noDataFoundException) {
+    public ResponseEntity<Map<String, String>> handleAuthenticationException(AuthenticationException authenticationException) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, WRONG_CREDENTIALS_MESSAGE));
     }
@@ -51,5 +51,12 @@ public class ControllerAdvisor {
             RestaurantAlreadyExistsException restaurantAlreadyExistsException) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, RESTAURANT_ALREADY_EXISTS_MESSAGE));
+    }
+
+    @ExceptionHandler(ConnectionErrorException.class)
+    public ResponseEntity<Map<String, String>> handleConnectionErrorException(
+            ConnectionErrorException connectionErrorException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, CONNECTION_PROBLEM));
     }
 }
