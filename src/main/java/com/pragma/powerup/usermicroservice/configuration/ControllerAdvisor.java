@@ -56,7 +56,14 @@ public class ControllerAdvisor {
     @ExceptionHandler(ConnectionErrorException.class)
     public ResponseEntity<Map<String, String>> handleConnectionErrorException(
             ConnectionErrorException connectionErrorException) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, CONNECTION_PROBLEM));
+    }
+
+    @ExceptionHandler(PersonIsNotOwnerException.class)
+    public ResponseEntity<Map<String, String>> handlePersonIsNotOwnerException(
+            PersonIsNotOwnerException personIsNotOwnerException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, PERSON_IS_NOT_OWNER));
     }
 }

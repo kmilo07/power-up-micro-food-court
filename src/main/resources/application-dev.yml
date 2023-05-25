@@ -16,3 +16,6 @@ management:
     web:
       exposure:
         include: "*"
+
+
+microservice-user: "http://localhost:8090"

@@ -10,7 +10,7 @@ public class Constants {
     public static final String REGEX_NIT_DIGITS = "^\\d{5,12}$";
     public static final String REGEX_BY_NAME = "^([\\d]*[\\s]*[a-zA-Z][\\w\\s]*)";
 
-    public static final int MAX_PAGE_SIZE = 2;
+    public static final String OWNER_ROLE_NAME = "ROLE_OWNER";
     public static final String RESPONSE_MESSAGE_KEY = "message";
     public static final String RESTAURANT_CREATED_MESSAGE = "Restaurant created successfully";
     public static final String RESTAURANT_DELETED_MESSAGE = "Restaurant deleted successfully";
@@ -26,6 +26,7 @@ public class Constants {
 
     public static final String RESTAURANT_ALREADY_EXISTS_MESSAGE = "A restaurant already exists with the NIT number provided";
     public static final String CONNECTION_PROBLEM = "Connection issues";
+    public static final String PERSON_IS_NOT_OWNER = "Person isn't an owner";
 
     public static final String RESTAURANT_NAME_MANDATORY = "The restaurant name is mandatory";
     public static final String RESTAURANT_NIT_MANDATORY = "The restaurant NIT is mandatory";
