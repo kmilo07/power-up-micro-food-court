@@ -6,6 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class DishRequestDto {
+    private Long id;
     private String name;
     private Long categoryId;
     private String description;

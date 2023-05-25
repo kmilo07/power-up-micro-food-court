@@ -37,4 +37,6 @@ public class Constants {
     public static final String PHONE_IS_INVALID = "Phone is invalid";
     public static final String NIT_IS_INVALID = "NIT is invalid";
     public static final String NAME_IS_INVALID = "Name is invalid";
+
+    public static final String DISH_CREATED_MESSAGE = "Dish created successfully";
 }
