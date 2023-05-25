@@ -38,7 +38,7 @@ public class MainSecurity {
     public SecurityFilterChain filterChain(HttpSecurity http, JwtEntryPoint jwtEntryPoint) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests(requests -> requests
-                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/health").permitAll()
+                        .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/health", "/category").permitAll()
                         .requestMatchers("/restaurant/create-restaurant").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
