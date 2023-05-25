@@ -10,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,7 +36,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if (token != null && jwtProvider.tokenIsValid(token)) {
             String role = getRole(token);
             UserDetails user = PrincipalUser.build(role);
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null,
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, req.getHeader(HttpHeaders.AUTHORIZATION),
                     user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
@@ -57,7 +58,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     private String getToken(HttpServletRequest request) {
-        String header = request.getHeader("Authorization");
+        String header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (header != null && header.startsWith("Bearer ")) {
             return header.substring(7); // return everything after "Bearer "
         }
