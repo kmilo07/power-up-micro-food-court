@@ -35,7 +35,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         String token = getToken(req);
         if (token != null && jwtProvider.tokenIsValid(token)) {
             String role = getRole(token);
-            UserDetails user = PrincipalUser.build(role);
+            String email = getEmail(token);
+            UserDetails user = PrincipalUser.build(email,role);
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, req.getHeader(HttpHeaders.AUTHORIZATION),
                     user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(auth);
@@ -66,15 +67,32 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     }
 
     private String getRole(String token){
-        String payload = token.split("\\.")[1];
-        String json = new String(Base64.getDecoder().decode(payload));
+        String decodePayload = getDecodePayload(token);
         String role;
         ObjectMapper mapper = new ObjectMapper();
         try {
-            role = mapper.readValue(json, HashMap.class).get("roles").toString();
+            role = mapper.readValue(decodePayload, HashMap.class).get("roles").toString();
         } catch (JsonProcessingException e) {
             throw new TokenException();
         }
         return role.replace("[","").replace("]","");
+    }
+
+    private String getEmail(String token){
+        String decodePayload = getDecodePayload(token);
+        String email;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            email = mapper.readValue(decodePayload, HashMap.class).get("sub").toString();
+        } catch (JsonProcessingException e) {
+            throw new TokenException();
+        }
+
+        return email;
+    }
+
+    private String getDecodePayload(String token){
+        String payload = token.split("\\.")[1];
+        return  new String(Base64.getDecoder().decode(payload));
     }
 }

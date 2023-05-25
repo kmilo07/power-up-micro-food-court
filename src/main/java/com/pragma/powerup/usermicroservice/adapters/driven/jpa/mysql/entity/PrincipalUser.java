@@ -9,16 +9,18 @@ import java.util.Collections;
 import java.util.List;
 
 public class PrincipalUser implements UserDetails {
+    private final String email;
 
     private final Collection<? extends GrantedAuthority> authority;
 
-    public PrincipalUser(Collection<? extends GrantedAuthority> authority) {
+    public PrincipalUser(String email,Collection<? extends GrantedAuthority> authority) {
+        this.email = email;
         this.authority = authority;
     }
 
-    public static PrincipalUser build(String role) {
+    public static PrincipalUser build(String email, String role) {
         List<GrantedAuthority> authority = Collections.singletonList(new SimpleGrantedAuthority(role));
-        return new PrincipalUser(authority);
+        return new PrincipalUser(email,authority);
     }
 
     @Override
@@ -33,7 +35,7 @@ public class PrincipalUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "12";
+        return email;
     }
 
     @Override
