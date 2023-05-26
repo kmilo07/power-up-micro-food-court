@@ -9,4 +9,6 @@ public interface IRestaurantHandler {
     void saveRestaurant(RestaurantRequestDto restaurantRequestDto);
 
     List<RestaurantResponseDto> getAllRestaurants();
+
+    RestaurantResponseDto getRestaurantById(Long restaurantId);
 }

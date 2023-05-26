@@ -36,6 +36,16 @@ public class RestaurantRestController {
     public ResponseEntity<List<RestaurantResponseDto>> getAllRestaurants(){
         return ResponseEntity.ok(restaurantHandler.getAllRestaurants());
     }
+    @Operation(summary = "Get restaurant",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Restaurant returned",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = RestaurantResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "No data found",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
+    @GetMapping("/get-restaurant-by-id/{restaurantId}")
+    public ResponseEntity<RestaurantResponseDto> getRestaurant(@PathVariable Long restaurantId){
+        return ResponseEntity.ok(restaurantHandler.getRestaurantById(restaurantId));
+    }
 
     @Operation(summary = "Add a new restaurant",
             responses = {

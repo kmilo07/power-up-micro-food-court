@@ -1,10 +1,7 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter;
 
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.RestaurantEntity;
-import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.ConnectionErrorException;
-import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.NoDataFoundException;
-import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.PersonIsNotOwnerException;
-import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.RestaurantAlreadyExistsException;
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.*;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IRestaurantEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IRestaurantRepository;
 import com.pragma.powerup.usermicroservice.configuration.Constants;
@@ -20,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class RestaurantMysqlAdapter implements IRestaurantPersistencePort {
@@ -51,6 +49,15 @@ public class RestaurantMysqlAdapter implements IRestaurantPersistencePort {
             throw new NoDataFoundException();
         }
         return restaurantEntityMapper.toRestaurantList(restaurantEntityList);
+    }
+
+    @Override
+    public Restaurant getRestaurantById(Long restaurantId) {
+        Optional<RestaurantEntity> restaurantEntity = restaurantRepository.findById(restaurantId);
+        if(restaurantEntity.isEmpty()){
+            throw new RestaurantNoExistException();
+        }
+        return restaurantEntity.map(restaurantEntityMapper::toRestaurant).orElse(null);
     }
 
     private String getOwnerIdRole(Long ownerId){

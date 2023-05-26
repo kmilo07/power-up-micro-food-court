@@ -27,4 +27,9 @@ public class RestaurantHandlerImpl implements IRestaurantHandler {
     public List<RestaurantResponseDto> getAllRestaurants() {
         return restaurantResponseMapper.restaurantListToResponseList(restaurantServicePort.getAllRestaurants());
     }
+
+    @Override
+    public RestaurantResponseDto getRestaurantById(Long restaurantId) {
+        return restaurantResponseMapper.restaurantToResponse(restaurantServicePort.getRestaurantById(restaurantId));
+    }
 }

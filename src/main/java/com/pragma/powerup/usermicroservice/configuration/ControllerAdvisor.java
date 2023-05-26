@@ -66,4 +66,11 @@ public class ControllerAdvisor {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, PERSON_IS_NOT_OWNER));
     }
+
+    @ExceptionHandler(RestaurantNoExistException.class)
+    public ResponseEntity<Map<String, String>> handleRestaurantNoExistException(
+            RestaurantNoExistException restaurantNoExistException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, RESTAURANT_DOES_NOT_EXIST));
+    }
 }

@@ -9,4 +9,6 @@ public interface IRestaurantServicePort {
     void saveRestaurant(Restaurant restaurant);
 
     List<Restaurant> getAllRestaurants();
+
+    Restaurant getRestaurantById(Long restaurantId);
 }
