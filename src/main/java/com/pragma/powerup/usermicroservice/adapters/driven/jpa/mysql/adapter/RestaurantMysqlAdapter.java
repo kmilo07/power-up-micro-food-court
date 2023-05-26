@@ -38,7 +38,7 @@ public class RestaurantMysqlAdapter implements IRestaurantPersistencePort {
             restaurantRepository.save(restaurantEntityMapper.toEntity(restaurant));
         }
         else{
-            throw new PersonIsNotOwnerException();
+            throw new PersonDoesNotRoleOwnerException();
         }
     }
 

@@ -26,7 +26,8 @@ public class Constants {
 
     public static final String RESTAURANT_ALREADY_EXISTS_MESSAGE = "A restaurant already exists with the NIT number provided";
     public static final String CONNECTION_PROBLEM = "Connection issues";
-    public static final String PERSON_IS_NOT_OWNER = "Person isn't an owner";
+    public static final String PERSON_IS_NOT_OWNER = "Person does not own the restaurant";
+    public static final String PERSON_DOES_HAVE_ROLE_OWNER = "Person does not have ownership role";
     public static final String RESTAURANT_DOES_NOT_EXIST = "The restaurant doesn't exist";
     public static final String RESTAURANT_NAME_MANDATORY = "The restaurant name is mandatory";
     public static final String RESTAURANT_NIT_MANDATORY = "The restaurant NIT is mandatory";

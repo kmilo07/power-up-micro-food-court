@@ -67,6 +67,13 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, PERSON_IS_NOT_OWNER));
     }
 
+    @ExceptionHandler(PersonDoesNotRoleOwnerException.class)
+    public ResponseEntity<Map<String, String>> handlePersonDoesNotRoleOwnerException(
+            PersonDoesNotRoleOwnerException personDoesNotRoleOwnerException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, PERSON_DOES_HAVE_ROLE_OWNER));
+    }
+
     @ExceptionHandler(RestaurantNoExistException.class)
     public ResponseEntity<Map<String, String>> handleRestaurantNoExistException(
             RestaurantNoExistException restaurantNoExistException) {
