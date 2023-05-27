@@ -21,7 +21,7 @@ import java.util.List;
 public class CategoryRestController {
     private final ICategoryHandler categoryHandler;
 
-    @Operation(summary = "Get all the roles",
+    @Operation(summary = "Get all the categories",
             responses = {
                     @ApiResponse(responseCode = "200", description = "All category returned",
                             content = @Content(mediaType = "application/json",

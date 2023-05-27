@@ -6,6 +6,7 @@ import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IDi
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IDishRepository;
 import com.pragma.powerup.usermicroservice.domain.model.Dish;
 import com.pragma.powerup.usermicroservice.domain.model.Restaurant;
+import com.pragma.powerup.usermicroservice.domain.spi.ICategoryPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.spi.IDishPersistencePort;
 import com.pragma.powerup.usermicroservice.domain.spi.IRestaurantPersistencePort;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class DishMysqlAdapter implements IDishPersistencePort {
     private final IDishRepository dishRepository;
     private final IDishEntityMapper dishEntityMapper;
     private final IRestaurantPersistencePort restaurantPersistencePort;
+    private final ICategoryPersistencePort categoryPersistencePort;
 
     @Value("${microservice-user}")
     private String baseUrl;
@@ -32,6 +34,7 @@ public class DishMysqlAdapter implements IDishPersistencePort {
     public void createDish(Dish dish) {
         Long userId = getUserIdByEmail();
         Restaurant restaurant =  restaurantPersistencePort.getRestaurantById(dish.getRestaurantId());
+        categoryPersistencePort.getCategoryById(dish.getCategoryId());
         if(userId!=null && userId.equals(restaurant.getOwnerId())){
             dishRepository.save(dishEntityMapper.toDishEntity(dish));
         }else{
@@ -59,9 +62,7 @@ public class DishMysqlAdapter implements IDishPersistencePort {
 }
 
 /*
-* "1. Solo el propietario de un restaurante puede crear platos.
 2. Para crear un plato se deben solicitar los siguientes campos obligatorios:
 Nombre del plato, precio del plato (en números enteros positivos y mayores a 0), Descripción, UrlImagen y la categoria.
-3. To do plato debe estar asociado a un restaurante.
 4. por defecto cada plato recien creado tiene la variable activa en true. "
 * */

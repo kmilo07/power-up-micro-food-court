@@ -40,4 +40,5 @@ public class Constants {
     public static final String NAME_IS_INVALID = "Name is invalid";
 
     public static final String DISH_CREATED_MESSAGE = "Dish created successfully";
+    public static final String CATEGORY_NOT_FOUND = "The category does not exist";
 }

@@ -1,7 +1,7 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions;
 
-public class CategoryNoExistException extends RuntimeException{
-    public CategoryNoExistException() {
+public class CategoryNotFoundException extends RuntimeException{
+    public CategoryNotFoundException() {
         super();
     }
 }

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ICategoryPersistencePort {
     List<Category> getAllCategories();
+
+    Category getCategoryById(Long categoryId);
 }
