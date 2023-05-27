@@ -21,7 +21,7 @@ public class DishEntity {
     @JoinColumn(name = "id_category")
     private CategoryEntity categoryEntity;
     private String description;
-    private Double price;
+    private Integer price;
     @ManyToOne
     @JoinColumn(name = "id_restaurant")
     private RestaurantEntity restaurantEntity;

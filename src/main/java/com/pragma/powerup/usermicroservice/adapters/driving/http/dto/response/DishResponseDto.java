@@ -10,7 +10,7 @@ public class DishResponseDto {
     private String name;
     private Long categoryId;
     private String description;
-    private Double price;
+    private Integer price;
     private Long restaurantId;
     private String urlImage;
     private Boolean active;

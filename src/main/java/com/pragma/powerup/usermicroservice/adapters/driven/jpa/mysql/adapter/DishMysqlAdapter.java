@@ -36,6 +36,8 @@ public class DishMysqlAdapter implements IDishPersistencePort {
         Restaurant restaurant =  restaurantPersistencePort.getRestaurantById(dish.getRestaurantId());
         categoryPersistencePort.getCategoryById(dish.getCategoryId());
         if(userId!=null && userId.equals(restaurant.getOwnerId())){
+            dish.setId(0L);
+            dish.setActive(true);
             dishRepository.save(dishEntityMapper.toDishEntity(dish));
         }else{
             throw new PersonIsNotOwnerException();
@@ -61,8 +63,3 @@ public class DishMysqlAdapter implements IDishPersistencePort {
     }
 }
 
-/*
-2. Para crear un plato se deben solicitar los siguientes campos obligatorios:
-Nombre del plato, precio del plato (en números enteros positivos y mayores a 0), Descripción, UrlImagen y la categoria.
-4. por defecto cada plato recien creado tiene la variable activa en true. "
-* */

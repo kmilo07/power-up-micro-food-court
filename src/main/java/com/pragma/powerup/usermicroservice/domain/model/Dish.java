@@ -5,12 +5,12 @@ public class Dish {
     private String name;
     private Long categoryId;
     private String description;
-    private Double price;
+    private Integer price;
     private Long restaurantId;
     private String urlImage;
     private Boolean active;
 
-    public Dish(Long id, String name, Long categoryId, String description, Double price, Long restaurantId, String urlImage, Boolean active) {
+    public Dish(Long id, String name, Long categoryId, String description, Integer price, Long restaurantId, String urlImage, Boolean active) {
         setId(id);
         setName(name);
         setCategoryId(categoryId);
@@ -53,11 +53,11 @@ public class Dish {
         this.description = description;
     }
 
-    public Double getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
