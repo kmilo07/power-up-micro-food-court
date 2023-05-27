@@ -51,11 +51,11 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public IDishServicePort dishServicePort(){return new DishUseCase(dishPersistencePort());
+    public IDishServicePort dishServicePort(){return new DishUseCase(dishPersistencePort(), restaurantPersistencePort(), categoryPersistencePort());
     }
 
     @Bean
     IDishPersistencePort dishPersistencePort(){
-        return new DishMysqlAdapter(dishRepository,dishEntityMapper,restaurantPersistencePort(),categoryPersistencePort());
+        return new DishMysqlAdapter(dishRepository,dishEntityMapper);
     }
 }
