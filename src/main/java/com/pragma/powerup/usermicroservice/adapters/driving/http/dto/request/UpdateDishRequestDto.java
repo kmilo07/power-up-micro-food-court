@@ -9,21 +9,14 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class DishRequestDto {
-    @NotBlank
-    @Size(min = 3, max = 150)
-    private String name;
+public class UpdateDishRequestDto {
     @NotNull
-    private Long categoryId;
+    @Positive
+    private Long id;
     @NotBlank
     @Size(max = 250)
     private String description;
     @NotNull
     @Positive
     private Integer price;
-    @NotNull
-    private Long restaurantId;
-    @NotBlank
-    private String urlImage;
-    private Boolean active;
 }

@@ -1,6 +1,8 @@
 package com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.adapter;
 
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.entity.DishEntity;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.ConnectionErrorException;
+import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.NoDataFoundException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.exceptions.PersonIsNotOwnerException;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.mappers.IDishEntityMapper;
 import com.pragma.powerup.usermicroservice.adapters.driven.jpa.mysql.repositories.IDishRepository;
@@ -17,6 +19,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class DishMysqlAdapter implements IDishPersistencePort {
@@ -43,6 +47,30 @@ public class DishMysqlAdapter implements IDishPersistencePort {
             throw new PersonIsNotOwnerException();
         }
     }
+
+    @Override
+    public void updateDish(Dish dish) {
+        Dish currentDish = getDish(dish);
+        Long userId = getUserIdByEmail();
+        Restaurant restaurant =  restaurantPersistencePort.getRestaurantById(currentDish.getRestaurantId());
+        if(userId!=null && userId.equals(restaurant.getOwnerId())){
+            setValues(currentDish, dish);
+            dishRepository.save(dishEntityMapper.toDishEntity(currentDish));
+        }else{
+            throw new PersonIsNotOwnerException();
+        }
+    }
+
+    private void setValues(Dish currentDish, Dish dish) {
+        currentDish.setDescription(dish.getDescription());
+        currentDish.setPrice(dish.getPrice());
+    }
+
+    private Dish getDish(Dish dish){
+        Optional<DishEntity> optionalDish = dishRepository.findById(dish.getId());
+        return optionalDish.map(dishEntityMapper::entityToDish).orElseThrow(NoDataFoundException::new);
+    }
+
 
 
     private Long getUserIdByEmail(){

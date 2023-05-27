@@ -37,10 +37,10 @@ public class MainSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtEntryPoint jwtEntryPoint) throws Exception {
         http.cors().and().csrf().disable()
-                .authorizeRequests(requests -> requests
+                .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/health", "/category","/restaurant","/restaurant/get-restaurant-by-id/**").permitAll()
                         .requestMatchers("/restaurant/create-restaurant").hasRole("ADMIN")
-                        .requestMatchers("/dish/create-dish").hasRole("OWNER")
+                        .requestMatchers("/dish/create-dish","/dish/update-dish").hasRole("OWNER")
                         .anyRequest().authenticated()
                 )
                 .formLogin().disable()
